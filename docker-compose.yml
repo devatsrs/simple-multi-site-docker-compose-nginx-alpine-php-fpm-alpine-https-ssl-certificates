@@ -7,9 +7,9 @@ services:
     volumes:
         # Mount PHP for each Public folder:
 
-        # site-one.com:
+        # localhost.test:
         # - Public Folder:
-      - ./sites/site-one.com/root/public/:/var/www/site-one.com/public
+      - ./sites/localhost.test/root/public/:/var/www/localhost.test/public
 
         # site-two.com:
         # - Public Folder:
@@ -24,25 +24,25 @@ services:
 
         #Nginx Configurations for you Sites:
 
-        # site-one.com:
+        # localhost.test:
         # - Nginx Server block
-      - ./sites/site-one.com/site.conf:/etc/nginx/sites-available/site-one.com.conf
-        # - Cloudflare certificates, uncomment if using certificates / ssl (see site-one.com/site.conf):
-      #- ./sites/site-one.com/certificates/:/etc/nginx/sites/site-one.com/certificates
+      - ./sites/localhost.test/site.conf:/etc/nginx/sites-available/localhost.test.conf
+        # - Cloudflare certificates, uncomment if using certificates / ssl (see localhost.test/site.conf):
+      - ./sites/localhost.test/certificates/:/etc/nginx/sites/localhost.test/certificates
         # - Public Folder:
-      - ./sites/site-one.com/root/public/:/var/www/site-one.com/public
+      - ./sites/localhost.test/root/public/:/var/www/localhost.test/public
 
         # site-two.com:
         # - Nginx Server block
       - ./sites/site-two.com/site.conf:/etc/nginx/sites-available/site-two.com.conf
-        # - Cloudflare certificates, uncomment if using certificates / ssl (see site-one.com/site.conf):
+        # - Cloudflare certificates, uncomment if using certificates / ssl (see localhost.test/site.conf):
       #- ./sites/site-two.com/certificates/:/etc/nginx/sites/site-two.com/certificates
         # - Public Folder:
       - ./sites/site-two.com/root/public/:/var/www/site-two.com/public
     ports:
       - "80:80"
       # Uncomment if using HTTPS/SSL certificates
-      #- "443:443"
+      - "443:443"
     depends_on:
       - php-fpm
     restart: always
