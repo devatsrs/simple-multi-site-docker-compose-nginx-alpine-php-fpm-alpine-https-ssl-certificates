@@ -1,14 +1,38 @@
-# WebServer for camara.pt
+# WebServer
 
-Main webserver for camara.pt and it's subdomains, and related company domains.
+## Prerequisites
 
-Using Nginx,
-Cloudflare certificates,
-And gathering real IP from cloudflare header,
+```
+    mkcert -install
 
-Current websites:
+```
 
-https://[www]camara.pt / https://pablo.camara.pt 
+## Create a ssl for domain
+
+```
+
+    cd sites/localhost.test
+    mkcert -install
+    mkcert localhost.test 127.0.0.1 ::1
+
+```
+
+## files geenrated
+
+```
+    \sites\localhost.test\certificates\localhost.test.key
+    sites\localhost.test\certificates\localhost.test.pem
+
+```
+
+## Setup generated file in sites\localhost.test\site.conf
+
+```
+
+    listen 443 ssl;
+    # Path used in docker-compose.yml
+    ssl_certificate /etc/nginx/sites/localhost.test/certificates/localhost.test.pem;
+    ssl_certificate_key /etc/nginx/sites/localhost.test/certificates/localhost.test.key;
 
 
-to be continued..
+```

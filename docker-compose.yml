@@ -13,7 +13,7 @@ services:
 
         # site-two.com:
         # - Public Folder:
-      - ./sites/site-two.com/root/public/:/var/www/site-two.com/public
+      #- ./sites/site-two.com/root/public/:/var/www/site-two.com/public
   nginx:
     build:
       context: ./docker/nginx
@@ -34,11 +34,11 @@ services:
 
         # site-two.com:
         # - Nginx Server block
-      - ./sites/site-two.com/site.conf:/etc/nginx/sites-available/site-two.com.conf
+      #- ./sites/site-two.com/site.conf:/etc/nginx/sites-available/site-two.com.conf
         # - Cloudflare certificates, uncomment if using certificates / ssl (see localhost.test/site.conf):
       #- ./sites/site-two.com/certificates/:/etc/nginx/sites/site-two.com/certificates
         # - Public Folder:
-      - ./sites/site-two.com/root/public/:/var/www/site-two.com/public
+      #- ./sites/site-two.com/root/public/:/var/www/site-two.com/public
     ports:
       - "80:80"
       # Uncomment if using HTTPS/SSL certificates
