@@ -36,3 +36,10 @@
 
 
 ```
+## Todos
+    - .env file
+    - multi version php, mysql
+    - Add Apache 
+    - Redis
+    - Email
+    
