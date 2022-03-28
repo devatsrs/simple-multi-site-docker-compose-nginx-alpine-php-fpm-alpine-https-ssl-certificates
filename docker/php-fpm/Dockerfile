@@ -1,4 +1,6 @@
-FROM php:fpm-alpine
+FROM rhamdeew/docker-php-8-fpm-alpine
+
+
 
 CMD ["php-fpm"]
 

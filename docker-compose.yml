@@ -7,16 +7,11 @@ services:
     volumes:
         # Mount PHP for each Public folder:
 
-        # localhost.test:
+        # ers.test:
         # - Public Folder:
-      - ./sites/localhost.test/root/public/:/var/www/localhost.test/public
-
-        # site-two.com:
-        # - Public Folder:
-      #- ./sites/site-two.com/root/public/:/var/www/site-two.com/public
-
+      - ../:/var/www
     networks:
-      - netwrokname
+      - ersnet
 
   nginx:
     build:
@@ -27,22 +22,15 @@ services:
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d
 
         #Nginx Configurations for you Sites:
-
-        # localhost.test:
+        # ers.test:
         # - Nginx Server block
-      - ./sites/localhost.test/site.conf:/etc/nginx/sites-available/localhost.test.conf
-        # - Cloudflare certificates, uncomment if using certificates / ssl (see localhost.test/site.conf):
-      - ./sites/localhost.test/certificates/:/etc/nginx/sites/localhost.test/certificates
+      - ./sites/ers.test/site.conf:/etc/nginx/sites-available/ers.test.conf
+        # - Cloudflare certificates, uncomment if using certificates / ssl (see ers.test/site.conf):
+      - ./sites/ers.test/certificates/:/etc/nginx/sites/ers.test/certificates
+      - ./sites/ers.test/logs/error.log:/var/log/nginx/error.log
         # - Public Folder:
-      - ./sites/localhost.test/root/public/:/var/www/localhost.test/public
+      - ../:/var/www
 
-        # site-two.com:
-        # - Nginx Server block
-      #- ./sites/site-two.com/site.conf:/etc/nginx/sites-available/site-two.com.conf
-        # - Cloudflare certificates, uncomment if using certificates / ssl (see localhost.test/site.conf):
-      #- ./sites/site-two.com/certificates/:/etc/nginx/sites/site-two.com/certificates
-        # - Public Folder:
-      #- ./sites/site-two.com/root/public/:/var/www/site-two.com/public
     ports:
       - "80:80"
       # Uncomment if using HTTPS/SSL certificates
@@ -51,7 +39,8 @@ services:
       - php-fpm
     restart: always
     networks:
-      - netwrokname
+      - ersnet
+      
 
   # Database
   database:
@@ -59,18 +48,18 @@ services:
       context: ./docker/mysql
     restart: 'always'
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3306:3306"
     volumes: 
       - ./docker/mysql/data/:/var/lib/mysql
       - ./docker/mysql/log/:/var/log/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: database_name
+      MYSQL_DATABASE: bitnami_opencart
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
     networks:
-      - netwrokname
+      - ersnet
 
 networks:
-  netwrokname:
+  ersnet:
     driver: bridge
