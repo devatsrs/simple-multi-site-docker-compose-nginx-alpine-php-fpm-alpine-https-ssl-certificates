@@ -1,35 +1,43 @@
-version: '3'
+version: '3.9'
 
 services:
   php-fpm:
     build:
       context: ./docker/php-fpm
     volumes:
-        # Mount PHP for each Public folder:
-
-        # ers.test:
-        # - Public Folder:
-      - ../:/var/www
+      - type: bind
+        source: ../
+        target: /var/www
     networks:
       - ersnet
-
   nginx:
     build:
       context: ./docker/nginx
     volumes:
         #Nginx Global Configurations
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+      - type: bind
+        source: ./docker/nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
 
-        #Nginx Configurations for you Sites:
-        # ers.test:
-        # - Nginx Server block
-      - ./sites/ers.test/site.conf:/etc/nginx/sites-available/ers.test.conf
-        # - Cloudflare certificates, uncomment if using certificates / ssl (see ers.test/site.conf):
-      - ./sites/ers.test/certificates/:/etc/nginx/sites/ers.test/certificates
-      - ./sites/ers.test/logs/error.log:/var/log/nginx/error.log
-        # - Public Folder:
-      - ../:/var/www
+      - type: bind
+        source: ./docker/nginx/conf.d/
+        target: /etc/nginx/conf.d
+
+      - type: bind
+        source: ./sites/ers.test/site.conf
+        target: /etc/nginx/sites-available/ers.test.conf
+
+      - type: bind
+        source: ./sites/ers.test/certificates/
+        target: /etc/nginx/sites/ers.test/certificates
+
+      - type: bind
+        source: ./sites/ers.test/logs/error.log
+        target: /var/log/nginx/error.log
+
+      - type: bind
+        source: ../
+        target: /var/www
 
     ports:
       - "80:80"
@@ -40,8 +48,6 @@ services:
     restart: always
     networks:
       - ersnet
-      
-
   # Database
   database:
     build:
@@ -50,8 +56,15 @@ services:
     ports:
       - "3306:3306"
     volumes: 
-      - ./docker/mysql/data/:/var/lib/mysql
-      - ./docker/mysql/log/:/var/log/mysql
+
+      - type: bind
+        source: ./docker/mysql/data/
+        target: /var/lib/mysql
+
+      - type: bind
+        source: ./docker/mysql/log/
+        target: /var/log/mysql
+
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: bitnami_opencart

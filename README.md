@@ -44,3 +44,9 @@
     - Add Apache
     - Redis
     - Email
+
+## Commands used
+
+    docker-compose up -d
+    docker-compose down
+    
